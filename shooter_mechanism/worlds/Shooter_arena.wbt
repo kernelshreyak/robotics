@@ -1,0 +1,116 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation 0.27971892753163907 -0.012612377506115196 -0.9599990882882091 3.2281002321429684
+  position 0.3067917678229515 -0.02174909743883738 0.25260779737108346
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 5 5
+}
+Robot {
+  translation -8.046986701863077e-09 -2.657869491076111e-07 0.04993218243693659
+  rotation -4.201960305701595e-11 1.0973439876236651e-10 1 0.2259695913003833
+  children [
+    DEF Base Shape {
+      appearance PBRAppearance {
+        baseColor 1 0.4 0.5
+        metalness 0
+      }
+      geometry Box {
+        size 0.1 0.2 0.1
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 917.5803304515731
+        axis 0 0 -1
+        anchor 0 0.055 0.055
+      }
+      device [
+        RotationalMotor {
+          name "Right_motor"
+          maxVelocity 100
+        }
+      ]
+      endPoint Solid {
+        translation -2.051876546725168e-10 0.05499999995328805 0.05499876737163286
+        rotation 0 0 -1 0.2352756033534777
+        children [
+          DEF Wheel Shape {
+            appearance PBRAppearance {
+              baseColor 0 1 0
+              roughness 1
+              metalness 0
+            }
+            geometry Cylinder {
+              height 0.01
+              radius 0.05
+            }
+          }
+        ]
+        boundingObject USE Wheel
+        physics DEF wheel_physics Physics {
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -906.6218490604899
+        axis 0 0 -1
+        anchor 0 -0.055 0.055
+      }
+      device [
+        RotationalMotor {
+          name "Left_motor"
+          maxVelocity 100
+        }
+      ]
+      endPoint Solid {
+        translation -3.9070567670177213e-11 -0.05500000020677882 0.05499876737163282
+        rotation 0 0 1 1.8431648266294691
+        children [
+          USE Wheel
+        ]
+        name "solid(1)"
+        boundingObject USE Wheel
+        physics USE wheel_physics
+      }
+    }
+  ]
+  name "solid"
+  boundingObject USE Base
+  physics Physics {
+    density 7.874
+  }
+  controller "my_Shooter_controller"
+}
+Solid {
+  translation 0 0 0.105
+  children [
+    DEF Projectile Shape {
+      appearance PBRAppearance {
+        baseColor 1 0 0
+        roughness 1
+        metalness 0
+      }
+      geometry Sphere {
+        radius 0.006
+      }
+    }
+  ]
+  name "projectile"
+  boundingObject USE Projectile
+  physics Physics {
+    density 2.3
+  }
+}

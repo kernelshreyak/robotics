@@ -1,0 +1,17 @@
+<circuit version="1.1.0-SR1" rev="2005" stepSize="1000000" stepsPS="1000000" NLsteps="100000" reaStep="1000000" animate="0" >
+
+<item itemtype="Battery" CircId="Battery-1" mainComp="false" Show_id="false" Show_Val="false" Pos="-276,40" rotation="0" hflip="1" vflip="1" label="Battery-1" idLabPos="-18,-22" labelrot="0" valLabPos="-10,10" valLabRot="0" Voltage="5 V" Resistance="1 mΩ" />
+
+<item itemtype="Ground" CircId="Ground-4" mainComp="false" Show_id="false" Show_Val="false" Pos="-244,96" rotation="0" hflip="1" vflip="1" label="Ground-4" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
+
+<item itemtype="Oscope" CircId="Oscope-14" mainComp="false" Show_id="false" Show_Val="false" Pos="-136,-44" rotation="0" hflip="1" vflip="1" label="Oscope-14" idLabPos="-90,-100" labelrot="0" valLabPos="-16,20" valLabRot="0" Basic_X="135 _px" Basic_Y="135 _px" BufferSize="600000" connectGnd="true" InputImped="10 MΩ" TimDiv="236072043917" TimPos="60252940187,60252940187,60252940187,60252940187," VolDiv="1.30481,1.30481,1.30481,1.30481," Tunnels=",,,," Trigger="4" Filter="0.1 V" AutoSC="4" Tracks="1" HideCh="false,false,false,false," VolPos="0,0,0,0," />
+
+<item itemtype="Push" CircId="Push-15" mainComp="false" Show_id="false" Show_Val="false" Pos="-304,-28" rotation="0" hflip="1" vflip="1" label="Push-15" idLabPos="-16,-24" labelrot="0" valLabPos="-16,20" valLabRot="0" Norm_Close="false" Poles="1" />
+
+<item itemtype="Connector" uid="Connector-35" startpinid="Ground-4-Gnd" endpinid="Battery-1-rPin" pointList="-244,80,-244,40,-260,40" />
+
+<item itemtype="Connector" uid="Connector-37" startpinid="Battery-1-lPin" endpinid="Push-15-pinP0" pointList="-292,40,-292,12,-320,12,-320,-28" />
+
+<item itemtype="Connector" uid="Connector-38" startpinid="Push-15-switch0pinN" endpinid="Oscope-14-Pin0" pointList="-288,-28,-264,-28,-264,-92,-224,-92" />
+
+</circuit>
