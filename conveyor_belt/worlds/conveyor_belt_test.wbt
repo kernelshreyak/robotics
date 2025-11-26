@@ -1,0 +1,146 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+
+WorldInfo {
+  contactProperties [
+    ContactProperties {
+      material1 "belt"
+      material2 "package"
+      coulombFriction [
+        0.1
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.17058298947252334 0.05147529811758252 0.983997834035382 2.7468125449667693
+  position 1.5629428231496463 -0.5659577403513285 0.6282300344641738
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 4 4
+}
+Robot {
+  translation -1.832264609178133e-06 0.00084688836540662 0.005997520208913852
+  rotation 0.15600322130214148 -0.9871023538270707 -0.035943539230456935 0.0001739657744947023
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.392157 0.411765 0.423529
+        }
+      }
+      geometry DEF belt Box {
+        size 2 0.1 0.02
+      }
+      isPickable FALSE
+    }
+  ]
+  name "conveyor"
+  contactMaterial "belt"
+  boundingObject USE belt
+  physics Physics {
+    density -1
+    mass 10
+  }
+  controller "conveyor_controller"
+  supervisor TRUE
+}
+DEF PACKAGE1 Solid {
+  translation -0.42001 -1.62475e-06 0.0408469
+  rotation 0.15610100340021774 -0.9877410980133985 5.7211441377174975e-06 0.0001744008455627133
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.901961 0.45098 0
+        }
+      }
+      geometry DEF package_geom Box {
+        size 0.05 0.05 0.05
+      }
+    }
+  ]
+  name "package"
+  contactMaterial "package"
+  boundingObject USE package_geom
+  physics Physics {
+    density -1
+    mass 0.2
+  }
+}
+DEF PACKAGE2 Solid {
+  translation -0.89001 -1.62422e-06 0.0407665
+  rotation 0.15610100340021774 -0.9877410980133985 5.7211441377174975e-06 0.0001744008455627133
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.901961 0.45098 0
+        }
+      }
+      geometry DEF package_geom Box {
+        size 0.05 0.05 0.05
+      }
+    }
+  ]
+  name "package(1)"
+  contactMaterial "package"
+  boundingObject USE package_geom
+  physics Physics {
+    density -1
+    mass 0.2
+  }
+}
+DEF PACKAGE3 Solid {
+  translation -0.57001 -1.62456e-06 0.0408209
+  rotation 0.15610100340021774 -0.9877410980133985 5.7211441377174975e-06 0.0001744008455627133
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.901961 0.45098 0
+        }
+      }
+      geometry DEF package_geom Box {
+        size 0.05 0.05 0.05
+      }
+    }
+  ]
+  name "package(2)"
+  contactMaterial "package"
+  boundingObject USE package_geom
+  physics Physics {
+    density -1
+    mass 0.2
+  }
+}
+DEF PACKAGE4 Solid {
+  translation -0.72001 -1.62439e-06 0.0407951
+  rotation 0.15610100340021774 -0.9877410980133985 5.7211441377174975e-06 0.0001744008455627133
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.901961 0.45098 0
+        }
+      }
+      geometry DEF package_geom Box {
+        size 0.05 0.05 0.05
+      }
+    }
+  ]
+  name "package(3)"
+  contactMaterial "package"
+  boundingObject USE package_geom
+  physics Physics {
+    density -1
+    mass 0.2
+  }
+}
