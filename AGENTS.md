@@ -1,8 +1,8 @@
 # Agent Notes
 
 ## Repository Snapshot (2025-02)
-- Top-level dirs: `circuit_simulations`, `copelliasim`, `industrial-iot`, `part_design_cad`, `shooter_mechanism`, `turret_simulation`, plus `readme.md` and this log.
-- Workspace was originally read-only; writes require explicit approval (already granted for README and this file).
+- Top-level dirs: `circuit_simulations`, `copelliasim`, `conveyor_belt`, `industrial-iot`, `part_design_cad`, `shooter_mechanism`, `turret_simulation`, plus `readme.md` and this log (now uppercase `AGENTS.md` so it is easier to spot).
+- Workspace was originally read-only; writes require explicit approval (already granted for README updates and this log).
 - No license file yet; repo mixes simulation assets, CAD, and IoT scripts.
 
 ## Key Components
@@ -27,6 +27,8 @@
 
 6. **circuit_simulations**
    - SimulIDE `.sim1` file `series_voltage_regulator.sim1` describing MOSFET regulator with battery, ground, oscilloscope, push switch.
+7. **conveyor_belt**
+   - Webots world `worlds/conveyor_belt_test.wbt` builds a belt + packages scene; supervisor controller `controllers/conveyor_controller/conveyor_controller.c` scans for `PACKAGE1..PACKAGE10` nodes, compares desired belt speed vs. package velocity, and applies forces along X so parcels glide across low-friction contact surfaces.
 
 ## Outstanding Ideas / Follow-ups
 - Consider adding screenshots or diagrams for each simulator project to README.

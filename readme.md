@@ -8,6 +8,7 @@ A grab bag of robotics experiments that span circuit-level simulations, full Web
 | ---- | -------- |
 | `turret_simulation/` | Webots project for a manually driven turret (controllers, worlds, custom PROTO, shared assets). |
 | `shooter_mechanism/` | Webots arena for a dual-wheel shooter plus its controller sources and binaries. |
+| `conveyor_belt/` | Webots supervisor that keeps packages gliding across a frictional conveyor demo. |
 | `copelliasim/` | Ready-to-run `.ttt` scenes and Lua scripts for Pioneer P3-DX and Robotnik mobile robots. |
 | `industrial-iot/` | Python OPC UA ingestion examples and a `venv/` stub for Codesys/Kepware integrations. |
 | `circuit_simulations/` | SimulIDE `.sim1` schematic of a series voltage regulator. |
@@ -48,6 +49,18 @@ A grab bag of robotics experiments that span circuit-level simulations, full Web
   webots ../../worlds/Shooter_arena.wbt
   ```
   Tweak `shoot_speed` before compiling if you swap motors.
+
+## Conveyor Belt (Webots)
+
+- **World**: `conveyor_belt/worlds/conveyor_belt_test.wbt` contains a belt, arena, and a handful of boxed packages (`DEF PACKAGE1`, `PACKAGE2`, etc.).
+- **Controller**: `controllers/conveyor_controller/conveyor_controller.c` runs as a supervisor robot; it enumerates up to ten packages, computes the delta between the desired belt speed (`BELT_SPEED`) and each box’s velocity, and applies a corrective force along +X so the boxes coast smoothly despite friction (`ContactProperties` uses 0.1 μ).
+- **Run it**:
+  ```bash
+  cd conveyor_belt/controllers/conveyor_controller
+  make
+  webots ../../worlds/conveyor_belt_test.wbt
+  ```
+  Keep the DEF names contiguous (`PACKAGE1`, `PACKAGE2`, …) so the controller auto-discovers them. Adjust `BELT_MIN_X/Z` bounds to match your belt geometry if you stretch it, otherwise the force cuts off early and parcels stall near the edges.
 
 ## CoppeliaSim Scenes
 
