@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
   printf("Left motor max speed: %.2f\n", L_max);
 
   // Use near-maximum velocity for fast shooting
-  double shoot_speed = 0.5 * R_max; // 90% of max for safety
+  double shoot_speed = 0.8 * R_max; // 90% of max for safety
 
   while (wb_robot_step(TIME_STEP) != -1) {
     // Spin in opposite directions

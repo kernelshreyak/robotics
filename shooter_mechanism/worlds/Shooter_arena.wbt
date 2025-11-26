@@ -7,8 +7,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.27971892753163907 -0.012612377506115196 -0.9599990882882091 3.2281002321429684
-  position 0.3067917678229515 -0.02174909743883738 0.25260779737108346
+  orientation 0.1556571405899007 -0.0037044823115183804 -0.987804196890345 3.2521662909348215
+  position 0.9047383213504985 -0.19347119563438378 0.3935311099453063
 }
 TexturedBackground {
 }
@@ -18,8 +18,7 @@ RectangleArena {
   floorSize 5 5
 }
 Robot {
-  translation -8.046986701863077e-09 -2.657869491076111e-07 0.04993218243693659
-  rotation -4.201960305701595e-11 1.0973439876236651e-10 1 0.2259695913003833
+  translation 0 0 0.0506814
   children [
     DEF Base Shape {
       appearance PBRAppearance {
@@ -39,11 +38,11 @@ Robot {
       device [
         RotationalMotor {
           name "Right_motor"
-          maxVelocity 100
+          maxVelocity 200
         }
       ]
       endPoint Solid {
-        translation -2.051876546725168e-10 0.05499999995328805 0.05499876737163286
+        translation -2.051876616533773e-10 0.05499999995328805 0.05499876737163286
         rotation 0 0 -1 0.2352756033534777
         children [
           DEF Wheel Shape {
@@ -72,11 +71,11 @@ Robot {
       device [
         RotationalMotor {
           name "Left_motor"
-          maxVelocity 100
+          maxVelocity 200
         }
       ]
       endPoint Solid {
-        translation -3.9070567670177213e-11 -0.05500000020677882 0.05499876737163282
+        translation -3.90705676701772e-11 -0.05500000020677882 0.05499876737163282
         rotation 0 0 1 1.8431648266294691
         children [
           USE Wheel
@@ -111,6 +110,6 @@ Solid {
   name "projectile"
   boundingObject USE Projectile
   physics Physics {
-    density 2.3
+    density 1.1
   }
 }
