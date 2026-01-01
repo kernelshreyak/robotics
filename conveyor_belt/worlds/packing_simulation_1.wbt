@@ -1,0 +1,82 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+IMPORTABLE EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/CardboardBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/BrushedAluminium.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/PlasticCrate.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/conveyors/protos/ConveyorBelt.proto"
+
+WorldInfo {
+  basicTimeStep 24
+  contactProperties [
+    ContactProperties {
+      material1 "belt"
+      material2 "package"
+      coulombFriction [
+        0.1
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.21927913204530314 0.045306484872367575 -0.9746096575952695 2.596416882378884
+  position 1.7785930233577554 0.8753725969757601 1.097463381716045
+}
+Robot {
+  translation -0.88 0 0.43
+  name "box_spawner"
+  controller "box_spawner_controller"
+  supervisor TRUE
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 4 4
+  floorAppearance Parquetry {
+  }
+  wallThickness 0.1
+  wallHeight 0.2
+  wallAppearance BrushedAluminium {
+    IBLStrength 4
+  }
+}
+CardboardBox {
+  translation -0.949988 -1.80411e-16 0.219456
+  rotation 0.0007694253969540968 0.9999996991903453 9.799886652108403e-05 0.00024483222669651557
+  name "box1"
+  size 0.06 0.06 0.06
+  mass 0.2
+}
+CardboardBox {
+  translation -0.829988 -1.80411e-16 0.219471
+  rotation 0.0007697072197765942 0.9999996989734636 9.799886748812144e-05 0.0002448322267500334
+  name "cardboard box(1)"
+  size 0.06 0.06 0.06
+  mass 0.2
+}
+CardboardBox {
+  translation -0.689988 1.80411e-16 0.219474
+  rotation 0.0007699297129941825 0.9999996988021839 9.799887100689216e-05 0.00024483222679248676
+  name "cardboard box(2)"
+  size 0.06 0.06 0.06
+  mass 0.2
+}
+CardboardBox {
+  translation -0.539728 -1.80411e-16 0.21957
+  rotation 0.0007707579353266186 0.999999700098532 7.573011758340229e-05 0.00024483225190873454
+  name "cardboard box(3)"
+  size 0.06 0.06 0.06
+  mass 0.2
+}
+ConveyorBelt {
+  size 2 0.1 0.2
+}
+PlasticCrate {
+  translation 0.9 0.24 0
+  size 0.2 0.2 0.15
+}

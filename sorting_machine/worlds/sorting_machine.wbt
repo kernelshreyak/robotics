@@ -1,0 +1,666 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/CardboardBox.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.1408779772567347 0.9593843095444965 0.24440773744683467 1.0820465550066185
+  position -0.8920399630665192 -0.5541850885263572 1.9122400200608833
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  translation -0.0950907 0.0287119 0
+  floorSize 3 4
+  floorAppearance Parquetry {
+    type "light strip"
+  }
+}
+CardboardBox {
+  hidden linearVelocity_0 8.157849736047561e-05 -0.05413663615321721 0.00023210146471893238
+  hidden angularVelocity_0 0.002901426150838172 0.0030634417367220736 0.000708904237050874
+  translation -2.51852166964341e-05 -0.026921489299952063 0.4698214175608954
+  rotation -0.15671073616852277 0.4045800569891451 -0.9009754284419637 0.0012850528104986862
+  size 0.13 0.2 0.05
+  mass 0.64
+}
+Robot {
+  translation 0.6 0 0.36
+  children [
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459065948005282
+        anchor -0.52 0.275 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor1"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 0.275 0.05796
+        rotation 0.6294225809090381 -0.4543100516046077 -0.630420170721737 2.289920041501888
+        children [
+          DEF roller Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.4 0.47 0.65
+                shininess 0.1
+              }
+            }
+            geometry Cylinder {
+              height 0.36
+              radius 0.027
+            }
+          }
+        ]
+        name "roller1"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -1.7347234759752525e-16 -6.938893903907228e-16 6.204980891205961e-16
+        angularVelocity 2 3.257324393134816e-16 -2.7041162385129683e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459065896428523
+        anchor -0.52 0.334 0.05795
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor2"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 0.334 0.05795
+        rotation 0.6294225738458414 -0.4543100712070233 -0.6304201636473454 2.289920009038312
+        children [
+          USE roller
+        ]
+        name "roller2"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity 1.7347234759786496e-16 -6.938893903907228e-16 6.2049245664223e-16
+        angularVelocity 2 2.255012395524279e-16 7.194338306078071e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459065878330433
+        anchor -0.52 0.39 0.05795
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor3"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 0.39 0.05795
+        rotation 0.6294225713673921 -0.4543100780854371 -0.630420161164968 2.2899199976469653
+        children [
+          USE roller
+        ]
+        name "roller3"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity 1.734723475978525e-16 -6.938893903907228e-16 6.204967385417736e-16
+        angularVelocity 2.0000000000000004 -1.374551524370152e-15 -4.597787343943868e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459066064807391
+        anchor -0.52 0.217 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor4"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 0.217 0.05796
+        rotation 0.6294225969045415 -0.45431000721245235 -0.630420186742592 2.289920115019774
+        children [
+          USE roller
+        ]
+        name "roller4"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity 1.7608576375772892e-13 2.0818022680699836e-15 1.900802775532325e-13
+        angularVelocity 1.9999999999999998 2.411788176341935e-14 4.72954364604299e-15
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459065924653295
+        anchor -0.52 0.154 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor5"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 0.154 0.05796
+        rotation 0.6294225777110923 -0.45431006047983297 -0.6304201675187227 2.28992002680362
+        children [
+          USE roller
+        ]
+        name "roller5"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -2.840609663955709e-10 -5.528659654194468e-11 6.218141520492585e-10
+        angularVelocity 1.9999999999999996 4.5545142683263885e-11 -1.7208189559367977e-11
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459065940226779
+        anchor -0.52 0.095 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor6"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 0.095 0.05796
+        rotation 0.6294225798438084 -0.4543100545609286 -0.6304201696548188 2.2899200366059227
+        children [
+          USE roller
+        ]
+        name "roller6"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -1.2146130337500933e-06 -1.3351503232956169e-08 1.2223128736417403e-06
+        angularVelocity 1.9999999999999996 8.390990832790672e-08 -6.042771069550884e-08
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459066000731676
+        anchor -0.52 0.036 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor7"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 0.036 0.05796
+        rotation 0.6294225881296718 -0.45431003156525834 -0.6304201779538148 2.2899200746890713
+        children [
+          USE roller
+        ]
+        name "roller7"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -2.8322991307257802e-05 -4.1630056025037944e-08 2.9558718935557467e-06
+        angularVelocity 1.9999999974323137 -4.697490827604869e-07 -5.459064165814975e-07
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459066053529776
+        anchor -0.52 -0.023 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor8"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.023 0.05796
+        rotation 0.6294225953601248 -0.4543100114986563 -0.6304201851957275 2.2899201079213882
+        children [
+          USE roller
+        ]
+        name "roller8"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity 5.212981789949461e-06 1.1161727502912763e-08 -3.777371777610321e-07
+        angularVelocity 1.9999999973447862 1.740748522655842e-07 -4.71120773798645e-07
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.459065978964025
+        anchor -0.52 -0.082 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor9"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.082 0.05796
+        rotation 0.6294225851486938 -0.45431003983833607 -0.630420174968112 2.2899200609880204
+        children [
+          USE roller
+        ]
+        name "roller9"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity 2.4324170005562612e-05 4.296082245634404e-08 -3.7973572207966418e-06
+        angularVelocity 1.9999999959181713 4.1645083369108233e-07 -5.813400741311724e-07
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.141 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor10"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.141 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller10"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.2 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor11"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.2 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller11"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.259 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor12"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.259 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller12"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.318 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor13"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.318 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller13"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.377 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor14"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.377 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller14"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.436 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor15"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.436 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller15"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.495 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor16"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.495 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller16"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.554 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor17"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.554 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller17"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.613 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor18"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.613 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller18"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.672 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor19"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.672 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller19"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.731 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor20"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.731 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller20"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.79 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor21"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.79 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller21"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.849 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor22"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.849 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller22"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.908 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor23"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.908 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller23"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -0.967 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor24"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -0.967 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller24"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 14.45906597976568
+        anchor -0.52 -1.026 0.05796
+      }
+      device [
+        RotationalMotor {
+          name "roller_motor25"
+        }
+      ]
+      endPoint Solid {
+        translation -0.52 -1.026 0.05796
+        rotation 0.6294225852584766 -0.45431003953365645 -0.630420175078069 2.2899200614926007
+        children [
+          USE roller
+        ]
+        name "roller25"
+        boundingObject USE roller
+        physics Physics {
+        }
+        linearVelocity -6.270475314242629e-29 -3.649897008577259e-39 -7.583945670728585e-16
+        angularVelocity 1.9999999999999998 2.955488043897099e-15 -9.955553457719633e-16
+      }
+    }
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.521569 0.521569 0.521569
+          shininess 0.6
+        }
+      }
+      geometry DEF machine_mesh_base Mesh {
+        url [
+          "../assets/conveyor_belt_machine.stl"
+        ]
+      }
+    }
+  ]
+  name "sorting_machine"
+  boundingObject USE machine_mesh_base
+  locked TRUE
+  controller "sorting_machine_conveyer"
+}
