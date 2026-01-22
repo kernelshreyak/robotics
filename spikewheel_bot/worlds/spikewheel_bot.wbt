@@ -1,0 +1,29 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/stairs/protos/StraightStairs.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.14379936925983516 -0.35056073103961227 0.9254344467618689 5.448753218649602
+  position -4.599130989336603 7.595589645534968 3.378484588304545
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 50 50
+  floorAppearance Parquetry {
+  }
+}
+Robot {
+  name "spikewheel_bot"
+}
+StraightStairs {
+  nSteps 10
+}

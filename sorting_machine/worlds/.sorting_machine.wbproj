@@ -4,7 +4,7 @@ simulationViewPerspectives: 000000ff00000001000000020000015200000413010000000201
 sceneTreePerspectives: 000000ff00000001000000030000001f000000c0000000fa0100000002010000000201
 maximizedDockId: -1
 centralWidgetVisible: 1
-renderingMode: PLAIN
+renderingMode: WIREFRAME
 orthographicViewHeight: 1
-textFiles: 0 "controllers/sorting_machine_conveyer/sorting_machine_conveyer.c"
+textFiles: 0 "../sorting_machine/controllers/sorting_machine_conveyer/sorting_machine_conveyer.c"
 consoles: Console:All:Error
