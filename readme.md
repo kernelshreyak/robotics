@@ -11,6 +11,8 @@ A grab bag of robotics experiments that span circuit-level simulations, full Web
 | `conveyor_belt/` | Webots supervisor that keeps packages gliding across a frictional conveyor demo. |
 | `copelliasim/` | Ready-to-run `.ttt` scenes and Lua scripts for Pioneer P3-DX and Robotnik mobile robots. |
 | `industrial-iot/` | Python OPC UA ingestion examples and a `venv/` stub for Codesys/Kepware integrations. |
+| `sorting_machine/` | Webots WIP conveyor belt that will sort incoming boxes by color and size. |
+| `panda-reach-and-pick/` | MP4 demos for a Panda reach-and-pick reinforcement learning script. |
 | `circuit_simulations/` | SimulIDE `.sim1` schematic of a series voltage regulator. |
 | `part_design_cad/` | FreeCAD, OBJ/MTL, and Blender sources for the turret tripod mechanics. |
 
@@ -61,6 +63,40 @@ A grab bag of robotics experiments that span circuit-level simulations, full Web
   webots ../../worlds/conveyor_belt_test.wbt
   ```
   Keep the DEF names contiguous (`PACKAGE1`, `PACKAGE2`, …) so the controller auto-discovers them. Adjust `BELT_MIN_X/Z` bounds to match your belt geometry if you stretch it, otherwise the force cuts off early and parcels stall near the edges.
+
+## Sorting Machine (Webots, WIP)
+
+- **Status**: Conveyor belt is wired up; sorting mechanism is in progress to route boxes by color and size.
+- **World**: `sorting_machine/worlds/sorting_machine.wbt` contains the roller conveyor and a starter scene.
+- **Controller**: `sorting_machine/controllers/sorting_machine_conveyer/sorting_machine_conveyer.c` spins up to 25 roller motors (`roller_motor1..N`) at a fixed velocity for now.
+- **Known limitations / next steps**:
+  - Add color/size detection (camera or distance sensors + classification).
+  - Implement diverter or gate actuators to route boxes into bins.
+  - Spawn varied box sizes/colors and add per-box metadata for sorting logic.
+  - Tune roller speeds, friction, and timing so boxes align before sorting.
+- **Run it**:
+  ```bash
+  cd sorting_machine/controllers/sorting_machine_conveyer
+  make
+  webots ../../worlds/sorting_machine.wbt
+  ```
+
+## Panda Reach-and-Pick Demos
+
+`panda-reach-and-pick/` contains MP4 clips of a Panda arm reach-and-pick reinforcement learning demo based on:
+
+```text
+https://github.com/kernelshreyak/ai-ml-learning/blob/master/reinforcement-learning/panda_reach_cube.py
+```
+
+**Still frames (2s mark)**
+
+| Clip | Frame |
+| ---- | ----- |
+| `panda-pick-episode-0.mp4` | ![Panda pick episode 0 at 2s](panda-reach-and-pick/panda-pick-episode-0-2s.png) |
+| `panda-pick-episode-0 (1).mp4` | ![Panda pick episode 0 alt at 2s](panda-reach-and-pick/panda-pick-episode-0-1-2s.png) |
+| `panda-reach-pick-episode-0.mp4` | ![Panda reach-pick episode 0 at 2s](panda-reach-and-pick/panda-reach-pick-episode-0-2s.png) |
+| `panda-reach-pick-episode-0 (1).mp4` | ![Panda reach-pick episode 0 alt at 2s](panda-reach-and-pick/panda-reach-pick-episode-0-1-2s.png) |
 
 ## CoppeliaSim Scenes
 
