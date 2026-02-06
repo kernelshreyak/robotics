@@ -7,10 +7,18 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/stairs/protos/StraightStairs.proto"
 
 WorldInfo {
+  basicTimeStep 12
+  contactProperties [
+    ContactProperties {
+      material2 "wheel_material"
+      bounce 0.6
+      bounceVelocity 0.06
+    }
+  ]
 }
 Viewpoint {
-  orientation -0.14379936925983516 -0.35056073103961227 0.9254344467618689 5.448753218649602
-  position -4.599130989336603 7.595589645534968 3.378484588304545
+  orientation -0.12008314173699443 -0.6316216227974277 0.7659204689034738 5.776820447110131
+  position -2.9859612090628076 0.7567157222774514 0.7598535733608166
 }
 TexturedBackground {
 }
@@ -21,9 +29,123 @@ RectangleArena {
   floorAppearance Parquetry {
   }
 }
-Robot {
-  name "spikewheel_bot"
-}
 StraightStairs {
-  nSteps 10
+  translation 0 0 0.03
+  stepRise 0.04
+  nSteps 11
+  stringerWidth 0.01
+  leftRail []
+  rightRail []
+}
+Robot {
+  translation -1.2899979329490077 0.010011698196731547 0.3496038173066527
+  rotation -0.982588976881942 0.1857902189558309 -0.0009471274690376744 3.180890212195096e-05
+  children [
+    Solid {
+      translation 3.3410438859959868e-09 1.7660409478564842e-08 -0.0005652856099461756
+      rotation -0.9999999999821221 4.7133830643414915e-07 -5.961021548748006e-06 2.3543862196250874e-06
+      children [
+        HingeJoint {
+          jointParameters HingeJointParameters {
+            position -0.0004148128386699469
+            axis 0 1 0
+          }
+          device [
+            RotationalMotor {
+              name "right_motor"
+              maxVelocity 500
+              maxTorque 1000
+            }
+          ]
+          endPoint Solid {
+            translation -4.034888427427495e-06 -0.19999815728453207 2.3058801973190865e-06
+            rotation 0.003336351508607084 0.9999899941188656 0.002980003483593286 6.282770490290422
+            children [
+              DEF wheel_right_shape Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.0862745 0.592157 0.254902
+                    shininess 0.8
+                  }
+                }
+                geometry Mesh {
+                  url [
+                    "../../part_design_cad/spike_wheeled_robot-robot_spiked_wheel001.stl"
+                  ]
+                }
+              }
+            ]
+            name "wheel_right"
+            contactMaterial "wheel_material"
+            boundingObject USE wheel_right_shape
+            physics Physics {
+              mass 5
+            }
+          }
+        }
+        HingeJoint {
+          jointParameters HingeJointParameters {
+            position -0.0012748831175689722
+            axis 0 1 0
+          }
+          device [
+            RotationalMotor {
+              name "left_motor"
+              maxVelocity 500
+              maxTorque 1000
+            }
+          ]
+          endPoint Solid {
+            translation -1.2630025918693801e-05 0.05999818257768716 1.106805249280574e-06
+            rotation -0.0002347259462384473 0.9999998519089716 0.0004910048522911585 6.281910423902405
+            children [
+              DEF wheel_left_shape Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.0862745 0.592157 0.254902
+                    shininess 0.8
+                  }
+                }
+                geometry Mesh {
+                  url [
+                    "../../part_design_cad/spike_wheeled_robot-robot_spiked_wheel001.stl"
+                  ]
+                }
+              }
+            ]
+            name "wheel_left"
+            contactMaterial "wheel_material"
+            boundingObject USE wheel_left_shape
+            physics Physics {
+              mass 5
+            }
+          }
+        }
+        DEF robot_base_shape Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.0784314 0.305882 0.8
+            }
+          }
+          geometry Mesh {
+            url [
+              "../../part_design_cad/spike_wheeled_robot-robot_centre_base001.stl"
+            ]
+          }
+        }
+      ]
+      name "robot_base"
+      boundingObject USE robot_base_shape
+      physics Physics {
+        mass 10
+      }
+    }
+  ]
+  name "spike_wheeled_robot"
+  physics Physics {
+  }
+  controller "spikewheel_robot_move_manual"
+  controllerArgs [
+    ""
+  ]
 }
