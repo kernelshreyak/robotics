@@ -1,7 +1,7 @@
 # Agent Notes
 
 ## Repository Snapshot (2025-02)
-- Top-level dirs: `circuit_simulations`, `copelliasim`, `conveyor_belt`, `industrial-iot`, `livmach_walker`, `part_design_cad`, `shooter_mechanism`, `turret_simulation`, plus `readme.md` and this log (now uppercase `AGENTS.md` so it is easier to spot).
+- Top-level dirs: `circuit_simulations`, `copelliasim`, `conveyor_belt`, `industrial-iot`, `livmach_walker`, `part_design_cad`, `shooter_mechanism`, `turret_simulation`, plus `README.md` and this log (now uppercase `AGENTS.md` so it is easier to spot).
 - Workspace was originally read-only; writes require explicit approval (already granted for README updates and this log).
 - No license file yet; repo mixes simulation assets, CAD, and IoT scripts.
 

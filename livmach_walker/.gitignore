@@ -1,0 +1,9 @@
+__pycache__/
+*.py[cod]
+
+bridge/__pycache__/
+controllers/livmach_walker/__pycache__/
+
+worlds/*.wbproj
+worlds/.*.wbproj
+worlds/.*.jpg
