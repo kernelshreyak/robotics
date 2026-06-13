@@ -5,5 +5,5 @@ sceneTreePerspectives: 000000ff00000001000000030000001f000000c0000000fa010000000
 maximizedDockId: -1
 centralWidgetVisible: 1
 orthographicViewHeight: 1
-textFiles: 0 "controllers/roller_vehicle_motion1/roller_vehicle_motion1.py"
+textFiles: 0 "../roller_vehicle/controllers/roller_vehicle_motion1/roller_vehicle_motion1.py"
 consoles: Console:All:All

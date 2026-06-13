@@ -1,0 +1,108 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "../protos/PendulumBall.proto"
+
+WorldInfo {
+  basicTimeStep 4
+  FPS 30
+  contactProperties [
+    ContactProperties {
+      material1 "steel"
+      material2 "steel"
+      coulombFriction [
+        0
+      ]
+      bounce 1
+      bounceVelocity 0.002
+      softCFM 0.0005
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.2462280384282332 0.1955047519355365 0.9492890208268547 1.686594532838198
+  position 0.17872299358340069 -1.2219780693579527 0.7614782449875178
+  follow "solid:solid"
+  followType "None"
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+}
+Solid {
+  translation -0.1 0 0.3
+  children [
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 0.0765912515168361
+        axis 0 1 0
+        anchor 0.2 0 0
+      }
+      endPoint PendulumBall {
+        position 0.0005863352658385945 0 0.015303277991690878
+        rotation 0 -1 0 0.613069693899573
+        bobOffset 0.2 0 -0.32
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 0.08702128264010171
+        axis 0 1 0
+        anchor 0.16 0 0
+      }
+      endPoint PendulumBall {
+        name "pendulum_ball(1)"
+        position 0.0006054340814737602 0 0.013905838904744457
+        rotation -7.4294754475203825e-06 0.9999999999723885 1.6076970746153057e-07 0.04168469079638682
+        bobOffset 0.16 0 -0.2
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 0.0867728420704224
+        axis 0 1 0
+        anchor 0.12 0 0
+      }
+      endPoint PendulumBall {
+        name "pendulum_ball(2)"
+        position 0.0004514881695778933 0 0.010399678799428562
+        rotation -7.452662481048185e-06 0.9999999999722159 1.607881114878817e-07 0.04155503917118447
+        bobOffset 0.12 0 -0.2
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 0.09038497400229817
+        axis 0 1 0
+        anchor 0.08 0 0
+      }
+      endPoint PendulumBall {
+        name "pendulum_ball(3)"
+        position 0.00032655533556272265 0 0.007220956675043487
+        rotation -7.467786885658049e-06 0.9999999999721031 1.608001160404585e-07 0.041470903861240485
+        bobOffset 0.08 0 -0.2
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 0.09024033073787456
+        axis 0 1 0
+        anchor 0.04 0 0
+      }
+      endPoint PendulumBall {
+        name "pendulum_ball(4)"
+        position 0.00016275585313578478 0 0.0036047161862111455
+        rotation -7.492741363812509e-06 0.9999999999719165 1.6081992292174058e-07 0.04133282720634701
+        bobOffset 0.04 0 -0.2
+      }
+    }
+  ]
+  boundingObject Box {
+    size 0.8 0.1 0.1
+  }
+  locked TRUE
+}

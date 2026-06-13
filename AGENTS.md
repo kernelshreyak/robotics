@@ -1,7 +1,7 @@
 # Agent Notes
 
 ## Repository Snapshot (2025-02)
-- Top-level dirs: `circuit_simulations`, `copelliasim`, `conveyor_belt`, `industrial-iot`, `part_design_cad`, `shooter_mechanism`, `turret_simulation`, plus `readme.md` and this log (now uppercase `AGENTS.md` so it is easier to spot).
+- Top-level dirs: `circuit_simulations`, `copelliasim`, `conveyor_belt`, `industrial-iot`, `livmach_walker`, `part_design_cad`, `shooter_mechanism`, `turret_simulation`, plus `readme.md` and this log (now uppercase `AGENTS.md` so it is easier to spot).
 - Workspace was originally read-only; writes require explicit approval (already granted for README updates and this log).
 - No license file yet; repo mixes simulation assets, CAD, and IoT scripts.
 
@@ -29,6 +29,11 @@
    - SimulIDE `.sim1` file `series_voltage_regulator.sim1` describing MOSFET regulator with battery, ground, oscilloscope, push switch.
 7. **conveyor_belt**
    - Webots world `worlds/conveyor_belt_test.wbt` builds a belt + packages scene; supervisor controller `controllers/conveyor_controller/conveyor_controller.c` scans for `PACKAGE1..PACKAGE10` nodes, compares desired belt speed vs. package velocity, and applies forces along X so parcels glide across low-friction contact surfaces.
+8. **livmach_walker**
+   - Webots walker project with world `worlds/livmach_walker.wbt`, controller `controllers/livmach_walker/livmach_walker.py`, external client `external_app.py`, and shared TCP bridge helpers under `bridge/`.
+   - Recent change: removed camera follow, added an IMU stack (`InertialUnit`, `Accelerometer`, `Gyro`) at the MuJoCo IMU site, and passed TCP port `5555` through `controllerArgs`.
+   - Controller now runs a non-blocking localhost TCP server, streams IMU plus left/right leg positions every step, accepts binary leg-angle commands from the external app, and keeps keyboard trim as a fallback.
+   - Shared binary protocol lives in `bridge/protocol.py`: `MSG_IMU` sends time, roll/pitch/yaw, accel xyz, gyro xyz, and left/right leg angles; `MSG_CMD` sends left/right leg target angles.
 
 ## Outstanding Ideas / Follow-ups
 - Consider adding screenshots or diagrams for each simulator project to README.

@@ -1,0 +1,160 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+
+# LivMach walker body (from MuJoCo, meters):
+#   body main: 132 x 83 x 39 mm, mass 70 g
+#   leg hinges (rear): x=-15 mm, y=±41.5 mm, z=-8.5 mm from body center
+#   legs: 20 x 13.5 x 52 mm, mass 12 g each, hinge axis Y, range ±90 deg
+
+WorldInfo {
+  basicTimeStep 8
+  contactProperties [
+    ContactProperties {
+      material1 "foot"
+      coulombFriction [
+        1
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.13260264977157477 0.2528765676601165 -0.9583683940959214 1.107468348074087
+  position -0.5058017931724019 0.651941474449077 0.33966598112966473
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 2 2
+  floorAppearance Parquetry {
+    type "light strip"
+  }
+}
+DEF LIVMACH_WALKER Robot {
+  translation 0 0 0.0605
+  children [
+    DEF BODY_SHAPE Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0.3 0.3 0.3
+        }
+      }
+      geometry Box {
+        size 0.132 0.083 0.039
+      }
+    }
+    InertialUnit {
+      translation 0.001 0 -0.0195
+      name "imu"
+    }
+    Accelerometer {
+      translation 0.001 0 -0.0195
+      name "accelerometer"
+    }
+    Gyro {
+      translation 0.001 0 -0.0195
+      name "gyro"
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor -0.015 -0.0415 -0.0085
+        minStop -1.5708
+        maxStop 1.5708
+        dampingConstant 0.04
+      }
+      device [
+        RotationalMotor {
+          name "left_leg_motor"
+          maxTorque 1
+        }
+        PositionSensor {
+          name "left_leg_sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.015 -0.0415 -0.0345
+        children [
+          Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.8 0.2 0.2
+              }
+            }
+            geometry Box {
+              size 0.02 0.0135 0.052
+            }
+          }
+        ]
+        name "left_leg"
+        contactMaterial "foot"
+        boundingObject Box {
+          size 0.02 0.0135 0.052
+        }
+        physics Physics {
+          density -1
+          mass 0.012
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor -0.015 0.0415 -0.0085
+        minStop -1.5708
+        maxStop 1.5708
+        dampingConstant 0.04
+      }
+      device [
+        RotationalMotor {
+          name "right_leg_motor"
+          maxTorque 1
+        }
+        PositionSensor {
+          name "right_leg_sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.015 0.0415 -0.0345
+        children [
+          Shape {
+            appearance Appearance {
+              material Material {
+                diffuseColor 0.82 0.54 0.46
+              }
+            }
+            geometry Box {
+              size 0.02 0.0135 0.052
+            }
+          }
+        ]
+        name "right_leg"
+        contactMaterial "foot"
+        boundingObject Box {
+          size 0.02 0.0135 0.052
+        }
+        physics Physics {
+          density -1
+          mass 0.012
+        }
+      }
+    }
+  ]
+  name "livmach_walker"
+  boundingObject Box {
+    size 0.132 0.083 0.039
+  }
+  physics Physics {
+    density -1
+    mass 0.07
+  }
+  controller "livmach_walker"
+  controllerArgs [
+    "5555"
+  ]
+}
