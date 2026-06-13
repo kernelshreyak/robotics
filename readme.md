@@ -13,6 +13,7 @@ A grab bag of robotics experiments that span circuit-level simulations, full Web
 | `industrial-iot/` | Python OPC UA ingestion examples and a `venv/` stub for Codesys/Kepware integrations. |
 | `sorting_machine/` | Webots WIP conveyor belt that will sort incoming boxes by color and size. |
 | `panda-reach-and-pick/` | MP4 demos for a Panda reach-and-pick reinforcement learning script. |
+| `ros2-experiments/` | Gazebo Sim and ROS 2 examples, currently including a 4-wheel basic vehicle with `cmd_vel` teleop. |
 | `circuit_simulations/` | SimulIDE `.sim1` schematic of a series voltage regulator. |
 | `part_design_cad/` | FreeCAD, OBJ/MTL, and Blender sources for the turret tripod mechanics. |
 
@@ -21,6 +22,7 @@ A grab bag of robotics experiments that span circuit-level simulations, full Web
 | Domain | Tools |
 | ------ | ----- |
 | Webots projects | Webots R2023b+, `gcc`/`make` (or MSVC on Windows). |
+| ROS 2 + Gazebo demos | ROS 2 Jazzy+ with Gazebo Harmonic / `gz sim` 8.x and `ros_gz_bridge`. |
 | CoppeliaSim scenes | CoppeliaSim Edu 4.6+ with Lua API enabled. |
 | Industrial IoT demos | Python 3.10+, `pip install opcua`, access to an OPC UA server (Codesys, Kepware Simulation Server, etc.). |
 | Circuit simulation | SimulIDE 1.x or another tool that opens `.sim1` XML circuits. |
@@ -97,6 +99,37 @@ https://github.com/kernelshreyak/ai-ml-learning/blob/master/reinforcement-learni
 | `panda-pick-episode-0 (1).mp4` | ![Panda pick episode 0 alt at 2s](panda-reach-and-pick/panda-pick-episode-0-1-2s.png) |
 | `panda-reach-pick-episode-0.mp4` | ![Panda reach-pick episode 0 at 2s](panda-reach-and-pick/panda-reach-pick-episode-0-2s.png) |
 | `panda-reach-pick-episode-0 (1).mp4` | ![Panda reach-pick episode 0 alt at 2s](panda-reach-and-pick/panda-reach-pick-episode-0-1-2s.png) |
+
+## ROS 2 Experiments
+
+Located in `ros2-experiments/`:
+
+- `basic-vehicle/models/basic_vehicle/model.sdf`: 4-wheel skid-steer vehicle for Gazebo Sim with driven wheel joints and a `gz::sim::systems::DiffDrive` plugin listening on `/cmd_vel`.
+- `basic-vehicle/worlds/basic_vehicle_world.sdf`: flat plane world that spawns the vehicle at the origin.
+- `basic-vehicle/drive_vehicle.py`: lightweight ROS 2 keyboard teleop that publishes `geometry_msgs/msg/Twist`.
+
+**Run**
+
+```bash
+export GZ_SIM_RESOURCE_PATH=$PWD/ros2-experiments/basic-vehicle/models:$GZ_SIM_RESOURCE_PATH
+gz sim ros2-experiments/basic-vehicle/worlds/basic_vehicle_world.sdf
+```
+
+In a second terminal:
+
+```bash
+source /opt/ros/$ROS_DISTRO/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist
+```
+
+In a third terminal:
+
+```bash
+source /opt/ros/$ROS_DISTRO/setup.bash
+python3 ros2-experiments/basic-vehicle/drive_vehicle.py
+```
+
+Use `w/s` for forward and reverse, `a/d` to steer, `x` or space to stop, and `q` to quit the teleop script.
 
 ## CoppeliaSim Scenes
 
