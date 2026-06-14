@@ -40,7 +40,7 @@ A collection of robotics experiments spanning Webots, CoppeliaSim, embedded cont
 
 - World: `worlds/livmach_walker.wbt`
 - Controller: `controllers/livmach_walker/livmach_walker.py`
-- External client: `external_app.py`
+- External controller: `external_controller.py`
 - Shared bridge code: `bridge/protocol.py`, `bridge/tcp_link.py`
 
 Recent additions:
@@ -67,7 +67,7 @@ Run it in two terminals:
 webots livmach_walker/worlds/livmach_walker.wbt
 
 # Terminal 2
-python livmach_walker/external_app.py
+python3 livmach_walker/external_controller.py
 ```
 
 For project-specific details, see `livmach_walker/README.md`.

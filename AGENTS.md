@@ -30,7 +30,7 @@
 7. **conveyor_belt**
    - Webots world `worlds/conveyor_belt_test.wbt` builds a belt + packages scene; supervisor controller `controllers/conveyor_controller/conveyor_controller.c` scans for `PACKAGE1..PACKAGE10` nodes, compares desired belt speed vs. package velocity, and applies forces along X so parcels glide across low-friction contact surfaces.
 8. **livmach_walker**
-   - Webots walker project with world `worlds/livmach_walker.wbt`, controller `controllers/livmach_walker/livmach_walker.py`, external client `external_app.py`, and shared TCP bridge helpers under `bridge/`.
+   - Webots walker project with world `worlds/livmach_walker.wbt`, controller `controllers/livmach_walker/livmach_walker.py`, external controller `external_controller.py`, and shared TCP bridge helpers under `bridge/`.
    - Recent change: removed camera follow, added an IMU stack (`InertialUnit`, `Accelerometer`, `Gyro`) at the MuJoCo IMU site, and passed TCP port `5555` through `controllerArgs`.
    - Controller now runs a non-blocking localhost TCP server, streams IMU plus left/right leg positions every step, accepts binary leg-angle commands from the external app, and keeps keyboard trim as a fallback.
    - Shared binary protocol lives in `bridge/protocol.py`: `MSG_IMU` sends time, roll/pitch/yaw, accel xyz, gyro xyz, and left/right leg angles; `MSG_CMD` sends left/right leg target angles.

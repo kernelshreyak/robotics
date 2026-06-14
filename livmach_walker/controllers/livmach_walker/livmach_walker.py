@@ -26,8 +26,8 @@ MIN_ANGLE = -1.2
 MAX_ANGLE = 1.2
 MAX_MOTOR_VELOCITY = 7.0
 
-FORWARD_AMPLITUDE = 0.16
-TURN_AMPLITUDE = 0.12
+FORWARD_AMPLITUDE = 0.6
+TURN_AMPLITUDE = 0.7
 GAIT_HZ = 1.1
 STANCE_RETURN_RATE = 0.10
 PITCH_GAIN = 0.45
@@ -116,8 +116,10 @@ def resolve_motion(pressed: set[int]) -> tuple[int, int, bool]:
 
 def stabilization_offsets() -> dict[str, float]:
     roll, pitch, _ = imu.getRollPitchYaw()
+    # Pitch pushes the front and rear legs in opposite directions to keep the torso level.
     front_bias = -pitch * PITCH_GAIN
     rear_bias = pitch * PITCH_GAIN
+    # Roll uses the same idea, but across left vs right legs.
     left_bias = -roll * ROLL_GAIN
     right_bias = roll * ROLL_GAIN
     return {
@@ -135,16 +137,20 @@ while robot.step(timestep) != -1:
     offsets = stabilization_offsets()
 
     if hold_still or (forward_cmd == 0 and turn_cmd == 0):
+        # Relax back toward the current stabilized stance instead of snapping to zero.
         for leg_name in LEG_ORDER:
             neutral = NEUTRAL_STANCE[leg_name] + offsets[leg_name]
             targets[leg_name] += (neutral - targets[leg_name]) * STANCE_RETURN_RATE
         mode = "idle" if not hold_still else "stand"
     else:
+        # Reverse the phase progression for backward motion so the crawl pattern actually runs in reverse.
         phase += 2.0 * math.pi * GAIT_HZ * (timestep / 1000.0)
+        phase_direction = 1.0 if forward_cmd >= 0 else -1.0
         for leg_name in LEG_ORDER:
-            wave = math.sin(phase + CRAWL_PHASE[leg_name])
+            wave = math.sin(phase_direction * phase + CRAWL_PHASE[leg_name])
             stride = forward_cmd * FORWARD_AMPLITUDE * wave
 
+            # Turning is implemented as a side-dependent bias on top of the crawl stride.
             if turn_cmd < 0:
                 if "left" in leg_name:
                     turn_bias = -TURN_AMPLITUDE * abs(wave)
@@ -185,6 +191,7 @@ while robot.step(timestep) != -1:
         print(f"MODE {mode}")
         last_mode = mode
 
+    # Apply the final target to each joint; Webots handles the interpolation.
     for leg_name, motor in motors.items():
         motor.setPosition(clamp(targets[leg_name], MIN_ANGLE, MAX_ANGLE))
 

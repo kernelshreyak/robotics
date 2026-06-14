@@ -1,95 +1,58 @@
 # LivMach Walker
 
-Webots walker project with a local TCP bridge for external balance or gait control.
+Webots quadruped walker with a single local keyboard controller.
 
-## Files
+## Overview
 
-- `worlds/livmach_walker.wbt`: main Webots world
-- `controllers/livmach_walker/livmach_walker.py`: simulation controller
-- `external_controller.py`: external Python controller backed by Ollama
-- `bridge/protocol.py`: shared binary message format
-- `bridge/tcp_link.py`: TCP client and server helpers
+The project now uses one controller only:
 
-## Recent Changes
+- [controllers/livmach_walker/livmach_walker.py](/home/shreyak/programming/robotics/livmach_walker/controllers/livmach_walker/livmach_walker.py): keyboard-controlled quadruped gait controller
+- [worlds/livmach_walker.wbt](/home/shreyak/programming/robotics/livmach_walker/worlds/livmach_walker.wbt): 4-legged Webots world and robot definition
 
-- Removed camera follow from the world setup.
-- Added an IMU stack at the MuJoCo IMU site at `(0.001, 0, -0.0195)`:
-  - `imu` as `InertialUnit`
-  - `accelerometer`
-  - `gyro`
-- Passed TCP port `5555` into the controller through `controllerArgs`.
-- Added a non-blocking localhost TCP server in the Webots controller.
-- Added an external Python controller that connects to Webots as a TCP client.
-- Webots controller now focuses on two jobs only: stream sensor/state data and execute leg-angle commands received from the external controller.
-- Webots prints IMU and leg telemetry periodically on its own console instead of streaming every packet to the external controller console.
-- The external controller is optimized for interactive use with `qwen2.5:3b`: it asks for one natural-language instruction at a time, sends a compact sensor snapshot to Ollama, sends the returned action to Webots, then prompts for the next instruction.
+The older external TCP bridge and Ollama-based controller were removed. The current setup is intentionally simpler: open the world in Webots and drive the robot directly with arrow keys.
 
-## Runtime Model
+## Controls
 
-Webots is the TCP server. The external Python controller is the TCP client.
-
-- Webots streams sensor and state data every step.
-- External logic consumes those packets and sends desired left and right leg target angles back.
-
-## Protocol
-
-Two binary message types are shared by Webots and the external app.
-
-- `MSG_IMU` from Webots to the app
-  - time
-  - roll, pitch, yaw
-  - accel x, y, z
-  - gyro x, y, z
-  - left leg angle
-  - right leg angle
-- `MSG_CMD` from the app to Webots
-  - left leg target angle in radians
-  - right leg target angle in radians
-
-`bridge/protocol.py` is the single source of truth for packet sizes and packing/unpacking.
+- `Up`: move forward
+- `Down`: move backward
+- `Left`: turn left
+- `Right`: turn right
+- `Space`: stand still / settle
 
 ## Running
 
-Start Webots first:
+From this project directory:
 
 ```bash
 webots worlds/livmach_walker.wbt
 ```
 
-Then start the external controller from the repository root:
+Inside Webots, make sure the robot controller is `livmach_walker`, then start or reset the simulation.
 
-```bash
-python3 livmach_walker/external_controller.py
-```
+## Current Design
 
-Once connected, enter a natural-language control objective such as:
+- 4 legs with one hinge joint per leg
+- front feet point forward
+- rear feet point backward
+- simple crawl-style gait
+- IMU-based pitch and roll stabilization in the controller
+- no external processes required
 
-```text
-Keep the walker balanced upright with small safe corrections.
-```
+## Files
 
-You can prefill the first instruction from the command line:
+- [worlds/livmach_walker.wbt](/home/shreyak/programming/robotics/livmach_walker/worlds/livmach_walker.wbt): arena and robot body/joint geometry
+- [controllers/livmach_walker/livmach_walker.py](/home/shreyak/programming/robotics/livmach_walker/controllers/livmach_walker/livmach_walker.py): gait logic, keyboard input, stabilization
+- [docs/controller-explainer.md](/home/shreyak/programming/robotics/livmach_walker/docs/controller-explainer.md): more detailed explanation of how the controller works
 
-```bash
-python3 livmach_walker/external_controller.py --instruction "Keep the walker balanced upright with small safe corrections."
-```
+## Notes
 
-## Extending Control Logic
+- If the robot behaves unexpectedly after edits, reset the world in Webots so the controller and world changes are reloaded.
+- If forward and backward behavior diverge, check the gait phase logic in `livmach_walker.py`.
+- If the robot tips, tune stance angles, gait amplitude, or stabilization gains before changing the whole structure.
 
-`external_controller.py` sends the model:
+## Current Limitations
 
-- your natural-language control objective
-- actuator limits and execution constraints
-- the latest IMU, accelerometer, gyro, and leg-position snapshot
-
-It then expects JSON actuator targets back from local Ollama model `qwen2.5:3b`.
-
-Before running it, make sure Ollama is installed, `ollama serve` is running, and the model is available locally.
-
-If you want to change the policy logic, edit `LivMachExternalController.on_step()` or the prompt built in `OllamaPolicy._build_prompt()`.
-
-Send commands with:
-
-```python
-self.client.send_cmd(left, right)
-```
+- The robot uses one hinge joint per leg, so the gait is necessarily simple.
+- Walking is procedural, not dynamically optimized, so stability still depends heavily on geometry and tuning.
+- Turning works by gait bias rather than a dedicated steering model, so it may be coarse.
+- The controller is best treated as a compact experimental baseline, not a finished locomotion stack.
