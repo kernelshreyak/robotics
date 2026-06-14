@@ -156,4 +156,4 @@ python ingest.py
 
 ## License
 
-No explicit license file exists yet. Add one if the repository is going to be shared broadly.
+This repository is licensed under the MIT License. See [LICENSE](/home/shreyak/programming/robotics/LICENSE).
