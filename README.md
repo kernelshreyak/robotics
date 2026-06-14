@@ -22,7 +22,7 @@ A collection of robotics experiments spanning Webots, CoppeliaSim, embedded cont
 | `circuit_simulations/` | SimulIDE `.sim1` circuits for regulator and basic measurement experiments. |
 | `part_design_cad/` | FreeCAD, Blender, OBJ, MTL, and STL assets reused across simulator projects. |
 | `Skeleton_male/` | Blender skeleton asset and a related rig UI script. |
-| `panda-reach-and-pick/` | MP4 clips and still frames from a Panda reach-and-pick RL experiment. |
+| `panda-reach-and-pick/` | MP4 clips and still frames from a Panda reach-and-pick RL experiment; source code lives in the upstream reinforcement-learning repo. |
 
 ## Prerequisites
 
@@ -141,6 +141,16 @@ python ingest.py
 ## Embedded 4WD Robot Car
 
 `4wd_robot_car/4wd_robot_control.ino` starts an ESP32 access point named `ESP32_Robot`, serves a simple browser UI, and maps HTTP routes such as `/forward`, `/left`, `/right`, and `/stop` to motor pin outputs.
+
+## Panda Reach-and-Pick
+
+The local `panda-reach-and-pick/` folder contains demo clips and still frames only. The actual notes and code live in the upstream reinforcement-learning repo:
+
+- [Pandapicker_PPO_v1.md](https://github.com/kernelshreyak/ai-ml-learning/blob/master/reinforcement-learning/Pandapicker_PPO_v1.md)
+- [Pandapicker_PPO_v2.md](https://github.com/kernelshreyak/ai-ml-learning/blob/master/reinforcement-learning/Pandapicker_PPO_v2.md)
+- [Pandapicker_PPO_v3.md](https://github.com/kernelshreyak/ai-ml-learning/blob/master/reinforcement-learning/Pandapicker_PPO_v3.md)
+- [panda_pick_cube.py](https://github.com/kernelshreyak/ai-ml-learning/blob/master/reinforcement-learning/panda_pick_cube.py)
+- [panda_reach_cube.py](https://github.com/kernelshreyak/ai-ml-learning/blob/master/reinforcement-learning/panda_reach_cube.py)
 
 ## CAD And Circuit Assets
 
