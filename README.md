@@ -6,8 +6,9 @@ A collection of robotics experiments spanning Webots, CoppeliaSim, embedded cont
 
 | Path | Contents |
 | ---- | -------- |
-| `livmach_walker/` | Webots walker with IMU instrumentation and a localhost TCP bridge for external balance or gait control. |
+| `livmach_walker/` | Webots quadruped walker with a local keyboard controller and IMU-based stabilization. |
 | `turret_simulation/` | Webots project for a manually driven turret with custom PROTO and shared tripod assets. |
+| `turret_targeting_system/` | Arduino manual turret pan controller driven by left/right buttons and a Servo motor. |
 | `shooter_mechanism/` | Webots arena for a dual-wheel shooter plus its controller sources and build outputs. |
 | `conveyor_belt/` | Webots conveyor demos, package handling controllers, and supporting assets. |
 | `sorting_machine/` | Webots WIP conveyor that will sort incoming boxes by color and size. |
@@ -28,6 +29,7 @@ A collection of robotics experiments spanning Webots, CoppeliaSim, embedded cont
 | Domain | Tools |
 | ------ | ----- |
 | Webots projects | Webots R2023b+ and, for C/C++ controllers, a compiler toolchain plus `make`. |
+| Arduino demos | Arduino IDE or PlatformIO with the `Servo` library available. |
 | CoppeliaSim scenes | CoppeliaSim Edu 4.6+ with Lua scripting enabled. |
 | Industrial IoT demos | Python 3.10+ and `pip install opcua`, plus access to an OPC UA server. |
 | Embedded ESP32 sketch | Arduino IDE or PlatformIO with ESP32 board support. |
@@ -36,41 +38,25 @@ A collection of robotics experiments spanning Webots, CoppeliaSim, embedded cont
 
 ## LivMach Walker
 
-`livmach_walker/` is the newest Webots project in the repo and now includes an external control bridge.
+`livmach_walker/` is the newest Webots project in the repo and uses a single local keyboard controller.
 
 - World: `worlds/livmach_walker.wbt`
 - Controller: `controllers/livmach_walker/livmach_walker.py`
-- External controller: `external_controller.py`
-- Shared bridge code: `bridge/protocol.py`, `bridge/tcp_link.py`
+- Project notes: `livmach_walker/README.md`
 
-Recent additions:
+Current behavior:
 
-- Removed camera follow from the world.
-- Added an IMU stack at the MuJoCo IMU site:
-  - `InertialUnit` for roll, pitch, yaw
-  - `Accelerometer`
-  - `Gyro`
-- Passed TCP port `5555` via `controllerArgs`.
-- Added a binary localhost TCP protocol between Webots and an external Python app.
-- Controller now streams IMU plus left/right leg positions every simulation step and accepts remote leg-angle commands.
-- Keyboard control remains available as a local fallback.
+- Keyboard controls the crawl gait directly.
+- IMU-based pitch and roll stabilization remains in the controller.
+- No external process or TCP bridge is required.
 
-Protocol summary:
-
-- `MSG_IMU`: time, roll/pitch/yaw, accel xyz, gyro xyz, left leg angle, right leg angle
-- `MSG_CMD`: left leg target angle, right leg target angle
-
-Run it in two terminals:
+Run it from the project directory:
 
 ```bash
-# Terminal 1
-webots livmach_walker/worlds/livmach_walker.wbt
-
-# Terminal 2
-python3 livmach_walker/external_controller.py
+webots worlds/livmach_walker.wbt
 ```
 
-For project-specific details, see `livmach_walker/README.md`.
+Inside Webots, make sure the robot controller is `livmach_walker`, then start or reset the simulation.
 
 ## Turret Simulation
 
@@ -83,6 +69,17 @@ cd turret_simulation/controllers/turret_manual
 make
 webots ../../worlds/"Turret Control Simulation.wbt"
 ```
+
+## Turret Targeting System
+
+`turret_targeting_system/` contains an Arduino sketch for manually aiming a turret pan servo.
+
+- Sketch: `turret_controller_manual.ino`
+- Inputs: left button on pin `2`, right button on pin `3`
+- Output: servo on pin `9`
+- Behavior: button presses step the pan angle between `0` and `180` degrees, with `INPUT_PULLUP` on both buttons
+
+Upload it with the Arduino IDE or PlatformIO after wiring the buttons and Servo library support.
 
 ## Shooter Mechanism
 
