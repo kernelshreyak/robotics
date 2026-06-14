@@ -7,3 +7,4 @@ controllers/livmach_walker/__pycache__/
 worlds/*.wbproj
 worlds/.*.wbproj
 worlds/.*.jpg
+.venv

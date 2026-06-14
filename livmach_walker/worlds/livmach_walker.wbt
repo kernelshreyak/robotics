@@ -5,18 +5,19 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
 
-# LivMach walker body (from MuJoCo, meters):
-#   body main: 132 x 83 x 39 mm, mass 70 g
-#   leg hinges (rear): x=-15 mm, y=±41.5 mm, z=-8.5 mm from body center
-#   legs: 20 x 13.5 x 52 mm, mass 12 g each, hinge axis Y, range ±90 deg
-
 WorldInfo {
   basicTimeStep 8
   contactProperties [
     ContactProperties {
       material1 "foot"
       coulombFriction [
-        1
+        4
+      ]
+    }
+    ContactProperties {
+      material1 "stabilizer"
+      coulombFriction [
+        0.2
       ]
     }
   ]
@@ -36,65 +37,125 @@ RectangleArena {
   }
 }
 DEF LIVMACH_WALKER Robot {
-  translation 0 0 0.0605
+  translation 0 0 0.094
+  contactMaterial "stabilizer"
   children [
-    DEF BODY_SHAPE Shape {
+    Shape {
       appearance Appearance {
         material Material {
-          diffuseColor 0.3 0.3 0.3
+          diffuseColor 0.28 0.28 0.30
         }
       }
       geometry Box {
         size 0.132 0.083 0.039
       }
     }
+    Transform {
+      translation 0.05 0 -0.022
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.08 0.08 0.08
+            }
+          }
+          geometry Sphere {
+            radius 0.009
+          }
+        }
+      ]
+    }
+    Transform {
+      translation -0.05 0 -0.022
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              diffuseColor 0.08 0.08 0.08
+            }
+          }
+          geometry Sphere {
+            radius 0.009
+          }
+        }
+      ]
+    }
     InertialUnit {
-      translation 0.001 0 -0.0195
+      translation 0 0 0
       name "imu"
-    }
-    Accelerometer {
-      translation 0.001 0 -0.0195
-      name "accelerometer"
-    }
-    Gyro {
-      translation 0.001 0 -0.0195
-      name "gyro"
     }
     HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 1 0
-        anchor -0.015 -0.0415 -0.0085
+        anchor 0.05 -0.041 -0.008
         minStop -1.5708
         maxStop 1.5708
-        dampingConstant 0.04
+        dampingConstant 0.05
       }
       device [
         RotationalMotor {
-          name "left_leg_motor"
-          maxTorque 1
+          name "front_left_leg_motor"
+          maxTorque 4
         }
         PositionSensor {
-          name "left_leg_sensor"
+          name "front_left_leg_sensor"
         }
       ]
       endPoint Solid {
-        translation -0.015 -0.0415 -0.0345
+        translation 0.05 -0.041 -0.05
         children [
-          Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0.8 0.2 0.2
+          Transform {
+            translation 0 0 0.002
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.84 0.26 0.26
+                  }
+                }
+                geometry Box {
+                  size 0.02 0.014 0.06
+                }
               }
-            }
-            geometry Box {
-              size 0.02 0.0135 0.052
-            }
+            ]
+          }
+          Transform {
+            translation 0.028 0 -0.03
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.12 0.12 0.12
+                  }
+                }
+                geometry Box {
+                  size 0.08 0.022 0.01
+                }
+              }
+            ]
           }
         ]
-        name "left_leg"
+        name "front_left_leg"
         contactMaterial "foot"
-        boundingObject Box {
-          size 0.02 0.0135 0.052
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.002
+              children [
+                Box {
+                  size 0.02 0.014 0.06
+                }
+              ]
+            }
+            Pose {
+              translation 0.028 0 -0.03
+              children [
+                Box {
+                  size 0.08 0.022 0.01
+                }
+              ]
+            }
+          ]
         }
         physics Physics {
           density -1
@@ -105,38 +166,233 @@ DEF LIVMACH_WALKER Robot {
     HingeJoint {
       jointParameters HingeJointParameters {
         axis 0 1 0
-        anchor -0.015 0.0415 -0.0085
+        anchor 0.05 0.041 -0.008
         minStop -1.5708
         maxStop 1.5708
-        dampingConstant 0.04
+        dampingConstant 0.05
       }
       device [
         RotationalMotor {
-          name "right_leg_motor"
-          maxTorque 1
+          name "front_right_leg_motor"
+          maxTorque 4
         }
         PositionSensor {
-          name "right_leg_sensor"
+          name "front_right_leg_sensor"
         }
       ]
       endPoint Solid {
-        translation -0.015 0.0415 -0.0345
+        translation 0.05 0.041 -0.05
         children [
-          Shape {
-            appearance Appearance {
-              material Material {
-                diffuseColor 0.82 0.54 0.46
+          Transform {
+            translation 0 0 0.002
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.84 0.58 0.50
+                  }
+                }
+                geometry Box {
+                  size 0.02 0.014 0.06
+                }
               }
-            }
-            geometry Box {
-              size 0.02 0.0135 0.052
-            }
+            ]
+          }
+          Transform {
+            translation 0.028 0 -0.03
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.12 0.12 0.12
+                  }
+                }
+                geometry Box {
+                  size 0.08 0.022 0.01
+                }
+              }
+            ]
           }
         ]
-        name "right_leg"
+        name "front_right_leg"
         contactMaterial "foot"
-        boundingObject Box {
-          size 0.02 0.0135 0.052
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.002
+              children [
+                Box {
+                  size 0.02 0.014 0.06
+                }
+              ]
+            }
+            Pose {
+              translation 0.028 0 -0.03
+              children [
+                Box {
+                  size 0.08 0.022 0.01
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.012
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor -0.05 -0.041 -0.008
+        minStop -1.5708
+        maxStop 1.5708
+        dampingConstant 0.05
+      }
+      device [
+        RotationalMotor {
+          name "rear_left_leg_motor"
+          maxTorque 4
+        }
+        PositionSensor {
+          name "rear_left_leg_sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.05 -0.041 -0.05
+        children [
+          Transform {
+            translation 0 0 0.002
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.26 0.60 0.84
+                  }
+                }
+                geometry Box {
+                  size 0.02 0.014 0.06
+                }
+              }
+            ]
+          }
+          Transform {
+            translation -0.028 0 -0.03
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.12 0.12 0.12
+                  }
+                }
+                geometry Box {
+                  size 0.08 0.022 0.01
+                }
+              }
+            ]
+          }
+        ]
+        name "rear_left_leg"
+        contactMaterial "foot"
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.002
+              children [
+                Box {
+                  size 0.02 0.014 0.06
+                }
+              ]
+            }
+            Pose {
+              translation -0.028 0 -0.03
+              children [
+                Box {
+                  size 0.08 0.022 0.01
+                }
+              ]
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.012
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        axis 0 1 0
+        anchor -0.05 0.041 -0.008
+        minStop -1.5708
+        maxStop 1.5708
+        dampingConstant 0.05
+      }
+      device [
+        RotationalMotor {
+          name "rear_right_leg_motor"
+          maxTorque 4
+        }
+        PositionSensor {
+          name "rear_right_leg_sensor"
+        }
+      ]
+      endPoint Solid {
+        translation -0.05 0.041 -0.05
+        children [
+          Transform {
+            translation 0 0 0.002
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.74 0.72 0.28
+                  }
+                }
+                geometry Box {
+                  size 0.02 0.014 0.06
+                }
+              }
+            ]
+          }
+          Transform {
+            translation -0.028 0 -0.03
+            children [
+              Shape {
+                appearance Appearance {
+                  material Material {
+                    diffuseColor 0.12 0.12 0.12
+                  }
+                }
+                geometry Box {
+                  size 0.08 0.022 0.01
+                }
+              }
+            ]
+          }
+        ]
+        name "rear_right_leg"
+        contactMaterial "foot"
+        boundingObject Group {
+          children [
+            Pose {
+              translation 0 0 0.002
+              children [
+                Box {
+                  size 0.02 0.014 0.06
+                }
+              ]
+            }
+            Pose {
+              translation -0.028 0 -0.03
+              children [
+                Box {
+                  size 0.08 0.022 0.01
+                }
+              ]
+            }
+          ]
         }
         physics Physics {
           density -1
@@ -146,15 +402,37 @@ DEF LIVMACH_WALKER Robot {
     }
   ]
   name "livmach_walker"
-  boundingObject Box {
-    size 0.132 0.083 0.039
+  boundingObject Group {
+    children [
+      Pose {
+        translation 0 0 0.004
+        children [
+          Box {
+            size 0.132 0.083 0.03
+          }
+        ]
+      }
+      Pose {
+        translation 0.05 0 -0.022
+        children [
+          Sphere {
+            radius 0.009
+          }
+        ]
+      }
+      Pose {
+        translation -0.05 0 -0.022
+        children [
+          Sphere {
+            radius 0.009
+          }
+        ]
+      }
+    ]
   }
   physics Physics {
     density -1
     mass 0.07
   }
   controller "livmach_walker"
-  controllerArgs [
-    "5555"
-  ]
 }

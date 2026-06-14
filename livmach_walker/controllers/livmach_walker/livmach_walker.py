@@ -1,128 +1,193 @@
 """
-LivMach walker Webots controller.
+LivMach quadruped keyboard controller.
 
-Streams IMU + leg state over TCP each step and applies leg commands received
-from the external Python app. Keyboard trim still works as a local fallback.
-
-TCP binary protocol: livmach_walker/bridge/protocol.py
-Default port: 5555 (override via controllerArgs in the world file).
+Single-controller setup. Attach this controller to the robot in Webots and use:
+  Up: move forward
+  Down: move backward
+  Left: turn left
+  Right: turn right
+  Space: stand still
 """
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
+import math
 
 from controller import Keyboard, Robot
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-if str(PROJECT_ROOT) not in sys.path:
-    sys.path.insert(0, str(PROJECT_ROOT))
+NEUTRAL_STANCE = {
+    "front_left": 0.55,
+    "front_right": 0.55,
+    "rear_left": -0.55,
+    "rear_right": -0.55,
+}
 
-from bridge.tcp_link import SimulationTcpServer
+MIN_ANGLE = -1.2
+MAX_ANGLE = 1.2
+MAX_MOTOR_VELOCITY = 7.0
 
-NEUTRAL_ANGLE = 0.0
-ANGLE_STEP = 0.05
-MIN_ANGLE = -1.5
-MAX_ANGLE = 1.5
-DEFAULT_PORT = 5555
+FORWARD_AMPLITUDE = 0.16
+TURN_AMPLITUDE = 0.12
+GAIT_HZ = 1.1
+STANCE_RETURN_RATE = 0.10
+PITCH_GAIN = 0.45
+ROLL_GAIN = 0.24
+LOG_EVERY_STEPS = 40
+
+LEG_ORDER = ("front_left", "front_right", "rear_left", "rear_right")
+CRAWL_PHASE = {
+    "front_left": 0.0,
+    "rear_right": math.pi / 2.0,
+    "front_right": math.pi,
+    "rear_left": 3.0 * math.pi / 2.0,
+}
 
 
 def clamp(value: float, low: float, high: float) -> float:
     return max(low, min(high, value))
 
 
-def parse_port() -> int:
-    if len(sys.argv) > 1:
-        return int(sys.argv[1])
-    return DEFAULT_PORT
-
-
 robot = Robot()
 timestep = int(robot.getBasicTimeStep())
-port = parse_port()
-
-left_motor = robot.getDevice("left_leg_motor")
-right_motor = robot.getDevice("right_leg_motor")
-left_sensor = robot.getDevice("left_leg_sensor")
-right_sensor = robot.getDevice("right_leg_sensor")
-imu = robot.getDevice("imu")
-accelerometer = robot.getDevice("accelerometer")
-gyro = robot.getDevice("gyro")
-
-for sensor in (left_sensor, right_sensor):
-    sensor.enable(timestep)
-
-imu.enable(timestep)
-accelerometer.enable(timestep)
-gyro.enable(timestep)
 
 keyboard = Keyboard()
 keyboard.enable(timestep)
 
-bridge = SimulationTcpServer(port=port)
+motors = {
+    "front_left": robot.getDevice("front_left_leg_motor"),
+    "front_right": robot.getDevice("front_right_leg_motor"),
+    "rear_left": robot.getDevice("rear_left_leg_motor"),
+    "rear_right": robot.getDevice("rear_right_leg_motor"),
+}
+sensors = {
+    "front_left": robot.getDevice("front_left_leg_sensor"),
+    "front_right": robot.getDevice("front_right_leg_sensor"),
+    "rear_left": robot.getDevice("rear_left_leg_sensor"),
+    "rear_right": robot.getDevice("rear_right_leg_sensor"),
+}
+imu = robot.getDevice("imu")
 
-left_target = NEUTRAL_ANGLE
-right_target = NEUTRAL_ANGLE
+for sensor in sensors.values():
+    sensor.enable(timestep)
 
-for motor in (left_motor, right_motor):
-    motor.setPosition(NEUTRAL_ANGLE)
+imu.enable(timestep)
 
-print("LivMach walker controller ready.")
-print(f"  TCP bridge on 127.0.0.1:{port}")
-print("  Run: python livmach_walker/external_app.py")
-print("  Keyboard fallback: UP/DOWN both legs, LEFT/RIGHT single leg, R reset")
+for leg_name, motor in motors.items():
+    motor.setVelocity(MAX_MOTOR_VELOCITY)
+    motor.setPosition(NEUTRAL_STANCE[leg_name])
 
-last_status = None
+print("LivMach quadruped controller ready.")
+print("  Up/Down: forward/backward")
+print("  Left/Right: turn left/right")
+print("  Space: stand still")
+
+targets = dict(NEUTRAL_STANCE)
+phase = 0.0
+step_count = 0
+last_mode = "idle"
+
+
+def gather_keys() -> set[int]:
+    pressed: set[int] = set()
+    while True:
+        key = keyboard.getKey()
+        if key == -1:
+            return pressed
+        pressed.add(key)
+
+
+def resolve_motion(pressed: set[int]) -> tuple[int, int, bool]:
+    forward = 0
+    turn = 0
+    hold_still = ord(" ") in pressed
+
+    if Keyboard.UP in pressed and Keyboard.DOWN not in pressed:
+        forward = 1
+    elif Keyboard.DOWN in pressed and Keyboard.UP not in pressed:
+        forward = -1
+
+    if Keyboard.LEFT in pressed and Keyboard.RIGHT not in pressed:
+        turn = -1
+    elif Keyboard.RIGHT in pressed and Keyboard.LEFT not in pressed:
+        turn = 1
+
+    return forward, turn, hold_still
+
+
+def stabilization_offsets() -> dict[str, float]:
+    roll, pitch, _ = imu.getRollPitchYaw()
+    front_bias = -pitch * PITCH_GAIN
+    rear_bias = pitch * PITCH_GAIN
+    left_bias = -roll * ROLL_GAIN
+    right_bias = roll * ROLL_GAIN
+    return {
+        "front_left": front_bias + left_bias,
+        "front_right": front_bias + right_bias,
+        "rear_left": rear_bias + left_bias,
+        "rear_right": rear_bias + right_bias,
+    }
+
 
 while robot.step(timestep) != -1:
-    status = bridge.status_message()
-    if status and status != last_status:
-        print(status)
-        last_status = status
+    step_count += 1
+    pressed = gather_keys()
+    forward_cmd, turn_cmd, hold_still = resolve_motion(pressed)
+    offsets = stabilization_offsets()
 
-    key = keyboard.getKey()
-    if key == ord("R"):
-        left_target = NEUTRAL_ANGLE
-        right_target = NEUTRAL_ANGLE
-    elif key == Keyboard.UP:
-        left_target += ANGLE_STEP
-        right_target += ANGLE_STEP
-    elif key == Keyboard.DOWN:
-        left_target -= ANGLE_STEP
-        right_target -= ANGLE_STEP
-    elif key == Keyboard.LEFT:
-        left_target -= ANGLE_STEP
-    elif key == Keyboard.RIGHT:
-        right_target += ANGLE_STEP
+    if hold_still or (forward_cmd == 0 and turn_cmd == 0):
+        for leg_name in LEG_ORDER:
+            neutral = NEUTRAL_STANCE[leg_name] + offsets[leg_name]
+            targets[leg_name] += (neutral - targets[leg_name]) * STANCE_RETURN_RATE
+        mode = "idle" if not hold_still else "stand"
+    else:
+        phase += 2.0 * math.pi * GAIT_HZ * (timestep / 1000.0)
+        for leg_name in LEG_ORDER:
+            wave = math.sin(phase + CRAWL_PHASE[leg_name])
+            stride = forward_cmd * FORWARD_AMPLITUDE * wave
 
-    remote_cmd = bridge.poll()
-    if remote_cmd is not None:
-        left_target, right_target = remote_cmd
+            if turn_cmd < 0:
+                if "left" in leg_name:
+                    turn_bias = -TURN_AMPLITUDE * abs(wave)
+                else:
+                    turn_bias = TURN_AMPLITUDE * abs(wave)
+            elif turn_cmd > 0:
+                if "right" in leg_name:
+                    turn_bias = -TURN_AMPLITUDE * abs(wave)
+                else:
+                    turn_bias = TURN_AMPLITUDE * abs(wave)
+            else:
+                turn_bias = 0.0
 
-    left_target = clamp(left_target, MIN_ANGLE, MAX_ANGLE)
-    right_target = clamp(right_target, MIN_ANGLE, MAX_ANGLE)
+            targets[leg_name] = clamp(
+                NEUTRAL_STANCE[leg_name] + stride + turn_bias + offsets[leg_name],
+                MIN_ANGLE,
+                MAX_ANGLE,
+            )
 
-    left_motor.setPosition(left_target)
-    right_motor.setPosition(right_target)
+        if forward_cmd > 0 and turn_cmd == 0:
+            mode = "forward"
+        elif forward_cmd < 0 and turn_cmd == 0:
+            mode = "backward"
+        elif forward_cmd == 0 and turn_cmd < 0:
+            mode = "turn-left"
+        elif forward_cmd == 0 and turn_cmd > 0:
+            mode = "turn-right"
+        elif forward_cmd > 0 and turn_cmd < 0:
+            mode = "forward-left"
+        elif forward_cmd > 0 and turn_cmd > 0:
+            mode = "forward-right"
+        elif forward_cmd < 0 and turn_cmd < 0:
+            mode = "backward-left"
+        else:
+            mode = "backward-right"
 
-    roll, pitch, yaw = imu.getRollPitchYaw()
-    ax, ay, az = accelerometer.getValues()
-    gx, gy, gz = gyro.getValues()
+    if mode != last_mode:
+        print(f"MODE {mode}")
+        last_mode = mode
 
-    bridge.send_imu(
-        time_s=robot.getTime(),
-        roll=roll,
-        pitch=pitch,
-        yaw=yaw,
-        ax=ax,
-        ay=ay,
-        az=az,
-        gx=gx,
-        gy=gy,
-        gz=gz,
-        left_leg=left_sensor.getValue(),
-        right_leg=right_sensor.getValue(),
-    )
+    for leg_name, motor in motors.items():
+        motor.setPosition(clamp(targets[leg_name], MIN_ANGLE, MAX_ANGLE))
 
-bridge.close()
+    if step_count % LOG_EVERY_STEPS == 0:
+        legs_text = ", ".join(f"{name}={sensors[name].getValue():+.3f}" for name in LEG_ORDER)
+        print(f"GAIT mode={mode} {legs_text}")

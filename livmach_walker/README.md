@@ -6,7 +6,7 @@ Webots walker project with a local TCP bridge for external balance or gait contr
 
 - `worlds/livmach_walker.wbt`: main Webots world
 - `controllers/livmach_walker/livmach_walker.py`: simulation controller
-- `external_app.py`: external Python client
+- `external_controller.py`: external Python controller backed by Ollama
 - `bridge/protocol.py`: shared binary message format
 - `bridge/tcp_link.py`: TCP client and server helpers
 
@@ -19,13 +19,14 @@ Webots walker project with a local TCP bridge for external balance or gait contr
   - `gyro`
 - Passed TCP port `5555` into the controller through `controllerArgs`.
 - Added a non-blocking localhost TCP server in the Webots controller.
-- Added an external Python client that connects to Webots as a TCP client.
-- Controller now streams IMU and leg position data every simulation step and applies leg-angle commands received from the external app.
-- Keyboard control remains as a fallback when remote commands are absent.
+- Added an external Python controller that connects to Webots as a TCP client.
+- Webots controller now focuses on two jobs only: stream sensor/state data and execute leg-angle commands received from the external controller.
+- Webots prints IMU and leg telemetry periodically on its own console instead of streaming every packet to the external controller console.
+- The external controller is optimized for interactive use with `qwen2.5:3b`: it asks for one natural-language instruction at a time, sends a compact sensor snapshot to Ollama, sends the returned action to Webots, then prompts for the next instruction.
 
 ## Runtime Model
 
-Webots is the TCP server. The external Python process is the TCP client.
+Webots is the TCP server. The external Python controller is the TCP client.
 
 - Webots streams sensor and state data every step.
 - External logic consumes those packets and sends desired left and right leg target angles back.
@@ -55,20 +56,40 @@ Start Webots first:
 webots worlds/livmach_walker.wbt
 ```
 
-Then start the external app from the repository root:
+Then start the external controller from the repository root:
 
 ```bash
-python livmach_walker/external_app.py
+python3 livmach_walker/external_controller.py
+```
+
+Once connected, enter a natural-language control objective such as:
+
+```text
+Keep the walker balanced upright with small safe corrections.
+```
+
+You can prefill the first instruction from the command line:
+
+```bash
+python3 livmach_walker/external_controller.py --instruction "Keep the walker balanced upright with small safe corrections."
 ```
 
 ## Extending Control Logic
 
-Put balancing or gait logic in `LivMachExternalApp.on_step()` inside `external_app.py`.
+`external_controller.py` sends the model:
+
+- your natural-language control objective
+- actuator limits and execution constraints
+- the latest IMU, accelerometer, gyro, and leg-position snapshot
+
+It then expects JSON actuator targets back from local Ollama model `qwen2.5:3b`.
+
+Before running it, make sure Ollama is installed, `ollama serve` is running, and the model is available locally.
+
+If you want to change the policy logic, edit `LivMachExternalController.on_step()` or the prompt built in `OllamaPolicy._build_prompt()`.
 
 Send commands with:
 
 ```python
 self.client.send_cmd(left, right)
 ```
-
-The current implementation sends a small sinusoidal leg motion as a wiring check.
